@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+    private int id;
     public String name;
     public String email;
     public List<String> friends;
