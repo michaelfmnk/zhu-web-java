@@ -11,6 +11,8 @@ public interface UserService {
 
     List<User> getUsers(Integer age);
 
+    List<User> getUsers();
+
     User getUserById(int id);
 
     void deleteUser(int id);

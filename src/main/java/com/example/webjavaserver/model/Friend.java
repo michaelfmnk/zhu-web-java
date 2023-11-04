@@ -4,14 +4,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 
 @Data
@@ -20,16 +19,15 @@ import java.util.List;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "friends")
+public class Friend {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    public String name;
-    public String email;
 
-    @OneToMany(mappedBy = "ofUser")
-    public List<Friend> friends;
+    private String name;
 
-    public int age;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User ofUser;
 }

@@ -1,6 +1,8 @@
 package com.example.webjavaserver.service;
 
+import com.example.webjavaserver.repository.UserRepository;
 import com.example.webjavaserver.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -8,43 +10,17 @@ import java.util.List;
 @Component
 public class UserServiceImpl implements UserService {
 
-
-    List<User> users = List.of(
-            User.builder()
-                    .name("John Doe 30")
-                    .email("johndoe@gmail.com")
-                    .friends(List.of("Jane Doe", "Jack Doe"))
-                    .age(30)
-                    .build(),
-            User.builder()
-                    .name("John Doe 12")
-                    .email("johndoe@gmail.com")
-                    .friends(List.of("Jane Doe", "Jack Doe"))
-                    .age(12)
-                    .build(),
-            User.builder()
-                    .name("John Doe 44")
-                    .email("johndoe@gmail.com")
-                    .friends(List.of("Jane Doe", "Jack Doe"))
-                    .age(44)
-                    .build(),
-            User.builder()
-                    .name("John Doe 12")
-                    .email("johndoe@gmail.com")
-                    .friends(List.of("Jane Doe", "Jack Doe"))
-                    .age(12)
-                    .build()
-    );
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public User createUser(User user) {
-        users.add(user);
-        return user;
+        return userRepository.save(user);
     }
 
     @Override
     public void deleteUser(int id) {
-        users.remove(id);
+        userRepository.deleteById(id);
     }
 
     @Override
@@ -52,7 +28,7 @@ public class UserServiceImpl implements UserService {
             Integer id,
             User user
     ) {
-        User updatedUser = users.get(id);
+        User updatedUser = userRepository.findById(id).orElse(null);
         if (updatedUser == null) {
             return null;
         }
@@ -62,27 +38,26 @@ public class UserServiceImpl implements UserService {
         updatedUser.friends = user.friends;
         updatedUser.age = user.age;
 
-        return updatedUser;
+        return userRepository.save(updatedUser);
     }
 
     @Override
     public List<User> getUsers(Integer age) {
         if (age != null) {
-            return this.users.stream()
-                    .filter(user -> user.age == age)
-                    .toList();
+            return userRepository.findByAge(age);
         }
 
-        return this.users;
+        return userRepository.findAll();
+    }
+
+    @Override
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 
     @Override
     public User getUserById(int id) {
-        if (id < 0 || id >= this.users.size()) {
-            return null;
-        }
-
-        return this.users.get(id);
+        return userRepository.findById(id).orElse(null);
     }
 
 }
