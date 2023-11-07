@@ -13,15 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-    private List<Product> products = new ArrayList<>();
-    private Long idCounter = 1L;
+    private final List<Product> products = new ArrayList<>();
+    private final AtomicLong idCounter = new AtomicLong(1);
     public ProductController() {
         // Додавання початкового продукту
         products.add(new Product(1L, "Назва продукту", "Опис продукту", 50.0));
-        idCounter++;
+        idCounter.incrementAndGet();
     }
 
     @GetMapping
@@ -49,9 +52,8 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ErrorMessageResponse("Id must be generated automatically"));
         }
-        product.setId(idCounter);
+        product.setId(idCounter.getAndIncrement());
         products.add(product);
-        idCounter++;
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
