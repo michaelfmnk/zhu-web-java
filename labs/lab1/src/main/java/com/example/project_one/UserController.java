@@ -93,11 +93,17 @@ public class UserController {
         return null;
     }
 
-    @ExceptionHandler(ResponseStatusException.class)
-    @ResponseBody
-    public void handleResponseStatusException(ResponseStatusException ex) {
 
-    }
+    // you handle the exception, but you don't return anything
+    // that leads to a 200 ok response
+    // either add ResponseEntity<?> as return value with body and status in this handle or remove it.
+    // if you remove it, Spring handles ResponseStatusException by default and returns a 404
+
+//    @ExceptionHandler(ResponseStatusException.class)
+//    @ResponseBody
+//    public void handleResponseStatusException(ResponseStatusException ex) {
+//
+//    }
 }
 
 
