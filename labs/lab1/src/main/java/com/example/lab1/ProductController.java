@@ -1,9 +1,16 @@
 package com.example.lab1;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.ArrayList;
 import java.util.List;
 @RestController
@@ -30,7 +37,8 @@ public class ProductController {
                 .orElse(null);
 
         if (product == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ErrorMessageResponse("Product not found"));
         }
         return ResponseEntity.ok(product);
     }
@@ -38,7 +46,8 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody Product product) {
         if (product.getId() != null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Id must be generated automatically");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorMessageResponse("Id must be generated automatically"));
         }
         product.setId(idCounter);
         products.add(product);
@@ -54,7 +63,8 @@ public class ProductController {
                 return ResponseEntity.ok(updatedProduct);
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorMessageResponse("Product not found"));
     }
 
     @DeleteMapping("/{id}")
@@ -65,6 +75,7 @@ public class ProductController {
                 return ResponseEntity.ok("Product deleted");
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorMessageResponse("Product not found"));
     }
 }
