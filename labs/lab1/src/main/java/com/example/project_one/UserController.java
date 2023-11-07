@@ -12,6 +12,14 @@ import java.util.concurrent.atomic.AtomicLong;
 @ControllerAdvice
 public class UserController {
     private final List<UserResponse> userList = new ArrayList<>();
+
+    public UserController() {
+        userList.add(new UserResponse("Dima Korsh", "dimakrsh@gmail.com", List.of("Rm Sh", "Kr Sp")));
+        userList.add(new UserResponse("Ivan Vovchok", "vovk@ukr.net", List.of("Al Ro", "Sv Se")));
+        userList.add(new UserResponse("Petya Bamper", "bamper@gmail.com", List.of("Sus", "Petro Bamper (fake)")));
+    }
+
+    // NICE!
     private final AtomicLong idCounter = new AtomicLong();
 
     @GetMapping("/users/{id}")
@@ -29,6 +37,8 @@ public class UserController {
         return userList.get(0);
     }
 
+    // I get the idea. Such aliases are used in real life,
+    // just make sure you return real user, not a random string
     @GetMapping("/me")
     public String getMe() {
         return "Hello from the user controller";
@@ -54,6 +64,7 @@ public class UserController {
             userList.remove(existingUser);
             return existingUser;
         } else {
+            // nice
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
     }
@@ -67,9 +78,12 @@ public class UserController {
 
     @GetMapping("/users")
     public List<UserResponse> getAllUsers() {
-        userList.add(new UserResponse("Dima Korsh", "dimakrsh@gmail.com", List.of("Rm Sh", "Kr Sp")));
-        userList.add(new UserResponse("Ivan Vovchok", "vovk@ukr.net", List.of("Al Ro", "Sv Se")));
-        userList.add(new UserResponse("Petya Bamper", "bamper@gmail.com", List.of("Sus", "Petro Bamper (fake)")));
+        // you're adding the same users every time you call this method
+        // you should only add them once
+        // I moved to constructor
+//        userList.add(new UserResponse("Dima Korsh", "dimakrsh@gmail.com", List.of("Rm Sh", "Kr Sp")));
+//        userList.add(new UserResponse("Ivan Vovchok", "vovk@ukr.net", List.of("Al Ro", "Sv Se")));
+//        userList.add(new UserResponse("Petya Bamper", "bamper@gmail.com", List.of("Sus", "Petro Bamper (fake)")));
         return userList;
     }
 
@@ -82,11 +96,17 @@ public class UserController {
         return null;
     }
 
-    @ExceptionHandler(ResponseStatusException.class)
-    @ResponseBody
-    public void handleResponseStatusException(ResponseStatusException ex) {
 
-    }
+    // you handle the exception, but you don't return anything
+    // that leads to a 200 ok response
+    // either add ResponseEntity<?> as return value with body and status in this handle or remove it.
+    // if you remove it, Spring handles ResponseStatusException by default and returns a 404
+
+//    @ExceptionHandler(ResponseStatusException.class)
+//    @ResponseBody
+//    public void handleResponseStatusException(ResponseStatusException ex) {
+//
+//    }
 }
 
 
