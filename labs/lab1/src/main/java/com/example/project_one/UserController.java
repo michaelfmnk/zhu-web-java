@@ -12,6 +12,14 @@ import java.util.concurrent.atomic.AtomicLong;
 @ControllerAdvice
 public class UserController {
     private final List<UserResponse> userList = new ArrayList<>();
+
+    public UserController() {
+        userList.add(new UserResponse("Dima Korsh", "dimakrsh@gmail.com", List.of("Rm Sh", "Kr Sp")));
+        userList.add(new UserResponse("Ivan Vovchok", "vovk@ukr.net", List.of("Al Ro", "Sv Se")));
+        userList.add(new UserResponse("Petya Bamper", "bamper@gmail.com", List.of("Sus", "Petro Bamper (fake)")));
+    }
+
+    // NICE!
     private final AtomicLong idCounter = new AtomicLong();
 
     @GetMapping("/users/{id}")
@@ -67,9 +75,12 @@ public class UserController {
 
     @GetMapping("/users")
     public List<UserResponse> getAllUsers() {
-        userList.add(new UserResponse("Dima Korsh", "dimakrsh@gmail.com", List.of("Rm Sh", "Kr Sp")));
-        userList.add(new UserResponse("Ivan Vovchok", "vovk@ukr.net", List.of("Al Ro", "Sv Se")));
-        userList.add(new UserResponse("Petya Bamper", "bamper@gmail.com", List.of("Sus", "Petro Bamper (fake)")));
+        // you're adding the same users every time you call this method
+        // you should only add them once
+        // I moved to constructor
+//        userList.add(new UserResponse("Dima Korsh", "dimakrsh@gmail.com", List.of("Rm Sh", "Kr Sp")));
+//        userList.add(new UserResponse("Ivan Vovchok", "vovk@ukr.net", List.of("Al Ro", "Sv Se")));
+//        userList.add(new UserResponse("Petya Bamper", "bamper@gmail.com", List.of("Sus", "Petro Bamper (fake)")));
         return userList;
     }
 
