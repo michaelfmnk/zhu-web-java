@@ -61,6 +61,10 @@ public class ProductController {
     public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
         for (int i = 0; i < products.size(); i++) {
             if (products.get(i).getId().equals(id)) {
+                // id in body might differ from id in path
+                // if they are different, we need to update id in body
+                // previously, if user did not set id in body, it was set to null causing error
+                updatedProduct.setId(id);
                 products.set(i, updatedProduct);
                 return ResponseEntity.ok(updatedProduct);
             }
