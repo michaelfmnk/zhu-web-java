@@ -37,6 +37,8 @@ public class UserController {
         return userList.get(0);
     }
 
+    // I get the idea. Such aliases are used in real life,
+    // just make sure you return real user, not a random string
     @GetMapping("/me")
     public String getMe() {
         return "Hello from the user controller";
@@ -62,6 +64,7 @@ public class UserController {
             userList.remove(existingUser);
             return existingUser;
         } else {
+            // nice
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
     }
