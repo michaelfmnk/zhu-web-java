@@ -1,17 +1,16 @@
 package com.example.webjavaserver.service;
 
-import com.example.webjavaserver.repository.UserRepository;
 import com.example.webjavaserver.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.webjavaserver.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public User createUser(User user) {
