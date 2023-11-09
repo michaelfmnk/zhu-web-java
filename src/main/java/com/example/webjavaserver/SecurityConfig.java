@@ -30,18 +30,12 @@ public class SecurityConfig {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, DataSource dataSource) throws Exception {
         auth
-                .jdbcAuthentication()
-                .dataSource(dataSource)
-                .authoritiesByUsernameQuery("")
-                .usersByUsernameQuery("");
-//                .inMemoryAuthentication()
-//                .withUser("user1").password("{noop}user1").roles("USER")
-//                .and()
-//
-//                .withUser("user2").password("{noop}user2").roles("USER")
-//                .and()
-//
-//                .withUser("admin").password("{noop}admin").roles("ADMIN");
+                .inMemoryAuthentication()
+                .withUser("user1").password("{noop}user1").roles("USER")
+                .and()
+                .withUser("user2").password("{noop}user2").roles("USER")
+                .and()
+                .withUser("admin").password("{noop}admin").roles("ADMIN");
     }
 
 }
